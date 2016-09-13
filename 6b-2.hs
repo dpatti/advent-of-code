@@ -7,12 +7,10 @@ import           Data.Maybe
 import           Data.Attoparsec.ByteString.Char8
 import qualified Data.ByteString.Char8 as BS
 
--- data Status = On | Off deriving Eq
 data Action = TurnOn | TurnOff | Toggle deriving Show
 type Coord = (Int, Int)
 data Range = Range { from :: Coord, to :: Coord } deriving Show
 data Command = Command Action Range deriving Show
-type Yard = Map.Map Coord Int
 
 commandParser :: Parser Command
 commandParser = do
@@ -70,20 +68,7 @@ run commands coord = sum . map amt $ commands
     worth TurnOff = -1
     worth Toggle  = 2
 
-smash :: [Command] -> [Coord] -> Int
-smash commands coord = sum . map amt $ commands
-  where
-    amt (Command action range) =
-      if inRange range coord
-      then worth action
-      else 0
-
-    worth TurnOn  = 1
-    worth TurnOff = -1
-    worth Toggle  = 2
-
 main :: IO ()
 main = do
-  commands <- fmap parseCommand <$> lines <$> getContents
+  commands <- fmap parseCommand . lines <$> getContents
   print . sum . map (run commands) . expandRange $ Range (0, 0) (999, 999)
-  -- print . reduce (smash commands) 0 . expandRange $ Range (0, 0) (999, 999)

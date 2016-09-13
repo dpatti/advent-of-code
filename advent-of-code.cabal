@@ -15,8 +15,14 @@ cabal-version:       >=1.10
 library
   default-language:    Haskell2010
   build-depends:       base >= 4.7 && < 5
+                     , aeson
+                     , vector
                      , attoparsec
                      , bytestring
                      , containers
                      , cryptohash
+                     , matrix
+                     , scientific
+                     , text
+                     , unordered-containers
                      , word8

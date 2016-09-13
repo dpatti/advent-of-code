@@ -1,5 +1,7 @@
 extra-deps: []
-resolver: lts-3.19
+resolver: lts-6.16
 flags: {}
 packages:
 - '.'
+ghc-options:
+  "*": -threaded -rtsopts -with-rtsopts=-N -O2
