@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import           Data.Attoparsec.Text
+import           Data.Bifunctor
 import           Data.Bits
 import           Data.Char
 import qualified Data.Map as Map
@@ -51,11 +52,15 @@ graphEval = undefined
 --   (Left e) -> error e
 --   (Right v) -> v
 
-parseWire :: [String] -> (Name, Op)
-parseWire input = (Name, parseOp) <*> split
+parseWire :: [String] -> (Source, Op)
+parseWire input = bimap Name parseOp (split input)
   where
-    split = ("a", "b")
+    split :: [String] -> (Name, [String])
+    split line =
+      case reverse line of
+        (name : "->" : op) -> (name, reverse op)
 
+    parseOp :: [String] -> Op
     parseOp [s] = Direct (source s)
     parseOp [s1, "AND", s2] = And (source s1) (source s2)
     parseOp [s1, "OR", s2] = Or (source s1) (source s2)
@@ -74,6 +79,7 @@ main = do
   -- let known = Map.fromList . map (\(n, Source v) -> (n, v)) $ sources 
   -- let evaluated = graphEval sources wires
 
+  -- I apparently didn't commit the rest of this
   print "A"
 
 

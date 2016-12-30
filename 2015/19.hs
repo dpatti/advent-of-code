@@ -47,6 +47,9 @@ replace rules molecule = concatMap (replace' molecule) rules
       | el == target = (replacement ++ molecule) : map (el :) (replace' molecule rule)
       | otherwise = map (el :) (replace' molecule rule)
 
+substitute :: [Rule] -> Molecule -> [Molecule]
+substitute = undefined
+
 main :: IO ()
 main = do
   input <- lines <$> getContents
@@ -56,15 +59,15 @@ main = do
 
   -- print $ replace rules molecule
   -- print . length . nub . replace rules $ molecule
-  let onlySmall = (< length molecule) . length . fst
-  let solutions = (["e"], 0) : concatMap (filter onlySmall . step rules) solutions
+  -- let onlySmall = (< length molecule) . length . fst
+  -- let solutions = (["e"], 0) : concatMap (filter onlySmall . step rules) solutions
   --print $ solutions !! 0
   --print $ step rules (solutions !! 0)
   --print $ solutions !! 1
 
   -- print solutions
   -- print . Data.List.take 10 $ solutions
-  print . head . filter ((== molecule) . fst) $ solutions
+  -- print . head . filter ((== molecule) . fst) $ solutions
   -- print . head . filter ((== molecule) . fst) $ solutions
 
   where
