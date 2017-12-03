@@ -8,6 +8,7 @@ instance Show Direction where
   show DLeft = "L"
   show DRight = "R"
 
+inverse :: Direction -> Direction
 inverse DUp = DDown
 inverse DDown = DUp
 inverse DLeft = DRight

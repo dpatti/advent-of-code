@@ -37,6 +37,7 @@ library
                      , containers
                      , cryptohash
                      , cryptonite
+                     , dlist
                      , matrix
                      , megaparsec
                      , mtl

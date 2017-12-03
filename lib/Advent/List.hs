@@ -32,6 +32,12 @@ eachSlice n xs = take n xs : eachSlice n (drop n xs)
 mode :: (Eq a, Ord a) => [a] -> a
 mode = head . minimumBy (comparing length) . group . sort
 
+-- chunks 2 [1, 2, 3, 4, 5] == [[1, 2], [3, 4], [5]]
+chunks :: Int -> [a] -> [[a]]
+chunks n xs =
+  let (chunk, rest) = splitAt n xs
+   in chunk : chunks n rest
+
 -- combinations 2 "abc" == ["ab", "ac", "bc"]
 combinations :: Int -> [a] -> [[a]]
 combinations 0 _ = [[]]

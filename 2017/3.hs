@@ -1,6 +1,9 @@
 {-# LANGUAGE NamedFieldPuns #-}
 import Advent
 import qualified Advent.Coord as Coord
+import Data.DList (DList)
+import qualified Data.DList as DList
+import Data.Functor
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
@@ -8,41 +11,54 @@ import Data.Maybe
 import Control.Monad.State
 import Control.Monad.Writer
 
-spiral :: [Direction]
-spiral = [DRight, DUp, DLeft, DDown]
+spiralDirections :: [Direction]
+spiralDirections = cycle [DRight, DUp, DLeft, DDown]
 
 origin :: Coord
 origin = Coord 0 0
 
-allCoords :: [Coord]
-allCoords = execWriter (allCoords' origin spiral 1)
-  where
-    allCoords' :: Coord -> [Direction] -> Int -> Writer [Coord] ()
-    allCoords' start (stepA:stepB:dirs) n = do
-      start <- foldM (f stepA) start [0..n - 1]
-      start <- foldM (f stepB) start [0..n - 1]
-      allCoords' start (dirs ++ [stepA, stepB]) (n + 1)
+timesM :: (Monad m) => Int -> (a -> m a) -> a -> m a
+timesM n f x = foldM ((f .) <$> const) x [1 .. n]
 
-    f :: Direction -> Coord -> Int -> Writer [Coord] Coord
-    f dir c _ = do
-      tell [c]
-      return (move dir c)
-
-allSums :: [Int]
-allSums = execWriter (execStateT (allSums' 1) (Map.singleton origin 1))
+-- First implementation with a writer monad
+spiralCoords' :: [Coord]
+spiralCoords' = DList.toList $ execWriter (loop origin spiralDirections 1)
   where
-    allSums' :: Int -> StateT (Map Coord Int) (Writer [Int]) ()
-    allSums' n = do
-      m <- get
-      let coord = allCoords !! n
-      let ns = neighbors8 coord
-      let v = sum . mapMaybe (`Map.lookup` m) $ ns
-      put (Map.insert coord v m)
-      lift (tell [v])
-      allSums' (n + 1)
+    loop :: Coord -> [Direction] -> Int -> Writer (DList Coord) ()
+    loop start dirs steps = do
+      end <- foldM (walk steps) start (take 2 dirs)
+      loop end (drop 2 dirs) (steps + 1)
+
+    walk :: Int -> Coord -> Direction -> Writer (DList Coord) Coord
+    walk steps start dir =
+      timesM steps (step dir) start
+
+    step :: Direction -> Coord -> Writer (DList Coord) Coord
+    step dir coord =
+      tell (return coord) $> move dir coord
+
+-- Without writer monad, and much simpler
+spiralCoords :: [Coord]
+spiralCoords =
+  scanl (flip move) origin . concat . concat $
+    zipWith (map . replicate) [1..] (chunks 2 spiralDirections)
+
+spiralSums :: [Int]
+spiralSums = evalState computation initialGrid
+  where
+    initialGrid :: Map Coord Int
+    initialGrid = Map.singleton origin 1
+
+    computation :: State (Map Coord Int) [Int]
+    computation =
+      forM (drop 1 spiralCoords) $ \coord -> do
+        grid <- get
+        let value = sum . mapMaybe (`Map.lookup` grid) . neighbors8 $ coord
+        modify (Map.insert coord value)
+        return value
 
 findCoord :: Int -> Coord
-findCoord n = allCoords !! (n - 1)
+findCoord n = spiralCoords !! (n - 1)
 
 distanceTo :: Coord -> Coord -> Int
 distanceTo c1 c2 =
@@ -55,4 +71,4 @@ main = do
   print . solve2 $ input
     where
       solve1 = distanceTo origin . findCoord . read
-      solve2 = head . ($ allSums) . dropWhile . (>) . read
+      solve2 = head . ($ spiralSums) . dropWhile . (>) . read
