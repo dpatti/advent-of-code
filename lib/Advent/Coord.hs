@@ -26,6 +26,16 @@ move DRight = (Coord 1 0 <>)
 neighbors :: Coord -> [Coord]
 neighbors pos = move <$> [DUp, DDown, DLeft, DRight] <*> [pos]
 
+-- fix
+neighbors8 :: Coord -> [Coord]
+neighbors8 pos =
+  (move <$> [DUp, DDown, DLeft, DRight] <*> [pos])
+  ++ [ move DUp (move DLeft pos)
+     , move DUp (move DRight pos)
+     , move DDown (move DLeft pos)
+     , move DDown (move DRight pos)
+     ]
+
 boundCoord :: Coord -> Coord -> Coord -> Coord
 boundCoord min max target = Coord (boundWith x) (boundWith y)
   where

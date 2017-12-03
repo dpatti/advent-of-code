@@ -39,12 +39,16 @@ combinations _ [] = []
 combinations n (x:xs) =
  ((x:) <$> combinations (n - 1) xs) ++ combinations n xs
 
+-- count 2 [1, 2, 3, 4, 3, 2, 1] == 2
 count :: (Eq a) => a -> [a] -> Int
 count x = length . filter (== x)
 
+-- allPairs [1, 2] == [(1, 1), (1, 2), (2, 1), (2, 2)]
 allPairs :: [a] -> [(a, a)]
 allPairs xs = map (,) xs <*> xs
 
+-- rotate DLeft 2 [1, 2, 3, 4, 5] == [3, 4, 5, 1, 2]
+-- rotate DRight 2 [1, 2, 3, 4, 5] == [4, 5, 1, 2, 3]
 rotate :: Direction -> Int -> [a] -> [a]
 rotate DLeft n xs = take (length xs) . drop n . cycle $ xs
 rotate DRight n xs = take (length xs) . drop (length xs - n) . cycle $ xs

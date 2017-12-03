@@ -1,7 +1,7 @@
-module Advent (module Advent, module Lib) where
+module Advent (module Lib) where
 
 import Advent.Bounded as Lib
-import Advent.Coord as Lib
+import Advent.Coord as Lib hiding (x, y)
 import Advent.Direction as Lib
 import Advent.Distance as Lib
 import Advent.Either as Lib
