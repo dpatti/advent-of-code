@@ -45,9 +45,13 @@ combinations _ [] = []
 combinations n (x:xs) =
  ((x:) <$> combinations (n - 1) xs) ++ combinations n xs
 
+-- countBy even [1, 2, 3, 4, 5] == 2
+countBy :: (a -> Bool) -> [a] -> Int
+countBy f = length . filter f
+
 -- count 2 [1, 2, 3, 4, 3, 2, 1] == 2
 count :: (Eq a) => a -> [a] -> Int
-count x = length . filter (== x)
+count x = countBy (== x)
 
 -- allPairs [1, 2] == [(1, 1), (1, 2), (2, 1), (2, 2)]
 allPairs :: [a] -> [(a, a)]
