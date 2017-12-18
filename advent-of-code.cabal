@@ -27,10 +27,12 @@ library
                      , Advent.List
                      , Advent.Map
                      , Advent.Parser
+                     , Advent.Prelude
                      , Advent.Search
                      , Advent.State
   build-depends:       base >= 4.7 && < 5
                      , aeson
+                     , array
                      , attoparsec
                      , bimap
                      , bytestring

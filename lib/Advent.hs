@@ -1,5 +1,7 @@
 module Advent (module Lib) where
 
+import Advent.Prelude as Lib
+
 import Advent.Bounded as Lib
 import Advent.Coord as Lib hiding (x, y)
 import Advent.Direction as Lib
