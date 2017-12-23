@@ -1,12 +1,12 @@
 module Advent.Parser where
 
-import Advent.Either
+import Data.Void
 import Text.Megaparsec
-import Text.Megaparsec.Error
-import Text.Megaparsec.String
+
+type Parser = Parsec Void String
 
 parseWith :: Parser a -> String -> a
-parseWith p = unwrapEither . parse p "INPUT"
+parseWith p s = unwrapEither . parse p "INPUT" $ s
   where
-    unwrapEither (Left err) = error . parseErrorPretty $ err
+    unwrapEither (Left err) = error . parseErrorPretty' s $ err
     unwrapEither (Right value) = value
