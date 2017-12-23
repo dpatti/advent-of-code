@@ -29,8 +29,9 @@ eachSlice :: Int -> [a] -> [[a]]
 eachSlice _ [] = []
 eachSlice n xs = take n xs : eachSlice n (drop n xs)
 
+-- mode [1,2,2,1,2] == 2
 mode :: (Eq a, Ord a) => [a] -> a
-mode = head . minimumBy (comparing length) . group . sort
+mode = head . maximumBy (comparing length) . group . sort
 
 -- chunks 2 [1, 2, 3, 4, 5] == [[1, 2], [3, 4], [5]]
 chunks :: Int -> [a] -> [[a]]

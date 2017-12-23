@@ -6,3 +6,5 @@ import Data.Maybe as Prelude
 import Data.Monoid as Prelude
 import Data.List as Prelude
 import Data.List.Split as Prelude
+
+import Debug.Trace as Prelude
