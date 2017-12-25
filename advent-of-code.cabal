@@ -26,10 +26,13 @@ library
                      , Advent.Hash
                      , Advent.List
                      , Advent.Map
+                     , Advent.Numeric
                      , Advent.Parser
                      , Advent.Prelude
+                     , Advent.Problem
                      , Advent.Search
                      , Advent.State
+                     , Advent.String
   build-depends:       base >= 4.7 && < 5
                      , aeson
                      , array
@@ -43,6 +46,7 @@ library
                      , matrix
                      , megaparsec
                      , mtl
+                     , parser-combinators
                      , pipes
                      , pqueue
                      , random-shuffle

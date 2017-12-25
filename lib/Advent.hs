@@ -12,6 +12,9 @@ import Advent.Grid as Lib
 import Advent.Hash as Lib
 import Advent.List as Lib
 import Advent.Map as Lib
+import Advent.Numeric as Lib
 import Advent.Parser as Lib
+import Advent.Problem as Lib
 import Advent.Search as Lib
 import Advent.State as Lib
+import Advent.String as Lib

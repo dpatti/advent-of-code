@@ -35,6 +35,7 @@ mode = head . maximumBy (comparing length) . group . sort
 
 -- chunks 2 [1, 2, 3, 4, 5] == [[1, 2], [3, 4], [5]]
 chunks :: Int -> [a] -> [[a]]
+chunks _ [] = []
 chunks n xs =
   let (chunk, rest) = splitAt n xs
    in chunk : chunks n rest
