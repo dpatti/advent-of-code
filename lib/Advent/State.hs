@@ -2,10 +2,13 @@ module Advent.State where
 
 import Control.Monad.State.Strict
 
-iterateState :: State s a -> s -> [a]
-iterateState eff s = a : iterateState eff s'
-  where
-    (a, s') = runState eff s
+repeatState :: s -> State s a -> [a]
+repeatState s eff = a : repeatState s' eff
+  where (a, s') = runState eff s
 
-updateWith :: a -> State a b -> a
+iterateState :: a -> s -> (a -> State s a) -> [a]
+iterateState a s f = a : iterateState a' s' f
+  where (a', s') = runState (f a) s
+
+updateWith :: s -> State s a -> s
 updateWith s = (`execState` s)

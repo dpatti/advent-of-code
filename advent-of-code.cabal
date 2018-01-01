@@ -30,6 +30,7 @@ library
                      , Advent.Parser
                      , Advent.Prelude
                      , Advent.Problem
+                     , Advent.Ring
                      , Advent.Search
                      , Advent.State
                      , Advent.String
@@ -49,6 +50,7 @@ library
                      , parser-combinators
                      , pipes
                      , pqueue
+                     , primitive
                      , random-shuffle
                      , scientific
                      , split
