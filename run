@@ -10,5 +10,5 @@ if [ ! -f "$1" ] || [ "$1" = "${1%.hs}" ]; then
   exit 1
 fi
 
-stack ghc "$1"
+stack ghc -- -O2 "$1"
 "./${1%.hs}"
