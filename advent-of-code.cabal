@@ -52,6 +52,7 @@ library
                      , pqueue
                      , primitive
                      , random-shuffle
+                     , safe
                      , scientific
                      , split
                      , text
