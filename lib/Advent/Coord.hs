@@ -24,7 +24,7 @@ move DLeft = (Coord (-1) 0 <>)
 move DRight = (Coord 1 0 <>)
 
 neighbors :: Coord -> [Coord]
-neighbors pos = move <$> [DUp, DDown, DLeft, DRight] <*> [pos]
+neighbors pos = move <$> directions <*> [pos]
 
 -- fix
 neighbors8 :: Coord -> [Coord]
