@@ -9,9 +9,11 @@ data Coord = Coord { x :: Int, y :: Int } deriving (Eq, Ord)
 instance Show Coord where
   show (Coord x y) = "(" ++ show x ++ ", " ++ show y ++ ")"
 
+instance Semigroup Coord where
+  Coord x1 y1 <> Coord x2 y2 = Coord (x1 + x2) (y1 + y2)
+
 instance Monoid Coord where
   mempty = Coord 0 0
-  mappend (Coord x1 y1) (Coord x2 y2) = Coord (x1 + x2) (y1 + y2)
 
 -- Coord map
 cmap :: (Int -> Int) -> Coord -> Coord

@@ -1,6 +1,5 @@
 module Advent.Parser where
 
-import Control.Applicative
 import Data.Char
 import Data.Void
 import Text.Megaparsec

@@ -15,8 +15,10 @@ instance Ord Distance where
   compare _ Unreachable = LT
   compare (Distance a) (Distance b) = compare a b
 
+instance Semigroup Distance where
+  Unreachable <> _ = Unreachable
+  _ <> Unreachable = Unreachable
+  Distance a <> Distance b = Distance (a + b)
+
 instance Monoid Distance where
   mempty = Distance 0
-  mappend Unreachable _ = Unreachable
-  mappend _ Unreachable = Unreachable
-  mappend (Distance a) (Distance b) = Distance (a + b)
