@@ -11,6 +11,6 @@ import Data.Monoid as Prelude
 import Data.List as Prelude
 import Data.List.Split as Prelude (splitOn)
 import Text.Megaparsec.Char as Prelude
-import Text.Megaparsec.Char.Lexer as Prelude hiding (space)
+import Text.Megaparsec.Char.Lexer as Prelude (signed, decimal)
 
 import Debug.Trace as Prelude

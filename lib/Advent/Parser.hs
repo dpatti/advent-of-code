@@ -4,6 +4,7 @@ import Data.Char
 import Data.Void
 import Text.Megaparsec
 import Text.Megaparsec.Char
+import qualified Text.Megaparsec.Char.Lexer as L
 
 type Parser = Parsec Void String
 
@@ -15,6 +16,12 @@ parseWith p s = unwrapEither . parse p "INPUT" $ s
 
 word :: Parser String
 word = some (satisfy (not . isSpace)) <* space1
+
+signedInt :: Parser Int
+signedInt = L.signed space L.decimal
+
+symbol :: String -> Parser String
+symbol = L.symbol space
 
 ($>) :: Functor f => f a -> b -> f b
 ($>) = flip (<$)
