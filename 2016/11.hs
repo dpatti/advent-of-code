@@ -1,21 +1,14 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE ViewPatterns #-}
 
-import Control.Monad
+import Advent hiding (combinations, bfs)
 import Control.Monad.State
 import Data.STRef
-import Data.List
-import Data.Maybe
 import Data.Ord
 import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Vector (Vector)
 import qualified Data.Vector as Vector
-import Text.Megaparsec
-import Text.Megaparsec.Lexer
-import Text.Megaparsec.String
-
-import Debug.Trace
 
 with :: (b -> b -> c) -> (a -> b) -> (a -> a -> c) 
 with f g a b = f (g a) (g b)

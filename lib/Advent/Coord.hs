@@ -45,3 +45,7 @@ boundCoord min max target = Coord (boundWith x) (boundWith y)
 
 coordInBounds :: Coord -> Coord -> Coord -> Bool
 coordInBounds lower upper target = target == boundCoord lower upper target
+
+manhattanDistance :: Coord -> Coord -> Int
+manhattanDistance (Coord x1 y1) (Coord x2 y2) =
+  abs (x2 - x1) + abs (y2 - y1)

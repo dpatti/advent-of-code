@@ -1,6 +1,7 @@
 {-# LANGUAGE BangPatterns, NamedFieldPuns #-}
 
 import Advent
+import Advent.Ring
 
 initial :: Ring Int
 initial = fromList [0]

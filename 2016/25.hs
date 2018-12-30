@@ -1,17 +1,8 @@
 {-# LANGUAGE NamedFieldPuns, ViewPatterns #-}
 
-import Control.Applicative
-import Control.Monad
-import Data.Char
+import Advent
 import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
-import Data.List
-import Data.Maybe
-import Text.Megaparsec
-import Text.Megaparsec.Lexer
-import Text.Megaparsec.String
-
-import Debug.Trace
 
 type Register = Int
 type Value = Int
@@ -30,11 +21,8 @@ data Cpu = Cpu { commands :: [Command]
                , out :: [Int]
                } deriving Show
 
-fromRight (Left e) = error (show e)
-fromRight (Right v) = v
-
 parseCommand :: String -> Command
-parseCommand = fromRight . parse commandParser "test"
+parseCommand = parseWith commandParser
   where
     commandParser :: Parser Command
     commandParser =
@@ -51,9 +39,6 @@ parseCommand = fromRight . parse commandParser "test"
 
     registerParser = ord <$> anyChar 
     valueParser = fromIntegral <$> signed (skipMany spaceChar) decimal
-
-upsert :: Ord k => (Maybe a -> a) -> k -> Map k a -> Map k a
-upsert f = Map.alter (Just . f)
 
 toggle :: Command -> Command
 toggle (Inc r) = Dec r

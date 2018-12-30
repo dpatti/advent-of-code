@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+find . -path './201[0-9]/[0-2]*.hs' -exec stack ghc -- -fno-code {} \; \
+  | { grep -v 'Compiling Main' || true; }

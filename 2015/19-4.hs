@@ -21,11 +21,13 @@ instance Functor ReverseList where
   fmap f RNil = RNil
   fmap f (RCons xs x) = RCons (fmap f xs) (f x)
 
+instance Semigroup (ReverseList a) where
+  RNil <> rlb = rlb
+  rla <> RNil = rla
+  rla <> (RCons xs x) = RCons (rla `mappend` xs) x
+
 instance Monoid (ReverseList a) where
   mempty = RNil
-  RNil `mappend` rlb = rlb
-  rla `mappend` RNil = rla
-  rla `mappend` (RCons xs x) = RCons (rla `mappend` xs) x
 
 instance Monad ReverseList where
   return = RCons RNil

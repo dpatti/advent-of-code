@@ -1,15 +1,9 @@
 {-# LANGUAGE ViewPatterns #-}
 
+import Advent
 import Control.Monad.State
-import Data.List
-import Data.Maybe
 import Data.Ord
 import qualified Data.Map.Strict as Map
-import Text.Megaparsec hiding (State)
-import Text.Megaparsec.Char
-import Text.Megaparsec.Lexer
-import Text.Megaparsec.String
-import Debug.Trace
 
 type Bot = Int
 type Value = Int
@@ -27,7 +21,7 @@ traceFactory = trace <$> pretty <*> id
     prettyBot (bot, inventory) = show bot ++ ": " ++ show inventory
 
 parseCommand :: String -> Command
-parseCommand = fromJust . parseMaybe (initParser <|> distributeParser)
+parseCommand = parseWith (initParser <|> distributeParser)
   where
     initParser :: Parser Command
     initParser = do

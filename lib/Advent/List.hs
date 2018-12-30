@@ -3,6 +3,8 @@ module Advent.List where
 import Advent.Direction
 import Data.List
 import Data.Ord
+import Data.Map (Map, fromListWith)
+import qualified Data.Set as Set
 
 findElem :: Eq a => a -> [a] -> Maybe a
 findElem = find . (==)
@@ -32,6 +34,10 @@ eachSlice n xs = take n xs : eachSlice n (drop n xs)
 -- mode [1,2,2,1,2] == 2
 mode :: (Eq a, Ord a) => [a] -> a
 mode = head . maximumBy (comparing length) . group . sort
+
+-- freqs [1,2,2,1,2] = fromList [(1,2),(2,3)]
+freqs :: (Ord a) => [a] -> Map a Int
+freqs = fromListWith (+) . map (flip (,) 1)
 
 -- chunks 2 [1, 2, 3, 4, 5] == [[1, 2], [3, 4], [5]]
 chunks :: Int -> [a] -> [[a]]
@@ -64,3 +70,19 @@ allPairs xs = map (,) xs <*> xs
 rotate :: Direction -> Int -> [a] -> [a]
 rotate DLeft n xs = take (length xs) . drop n . cycle $ xs
 rotate DRight n xs = take (length xs) . drop (length xs - n) . cycle $ xs
+
+-- churn is intended to take a list of elements and gives you the ability to
+-- look at two elements at a time and decide what to push into the output list,
+-- what to push on top of the input list, and ultimately whether or not the
+-- computation should continue.
+--
+-- these are equivalent to `id`:
+--   churn (\cont x y -> x : y : cont [])
+--   churn (\cont x y -> x : cont [y])
+churn :: (([a] -> [a]) -> a -> a -> [a]) -> [a] -> [a]
+churn f (x:y:xs) = f (churn f . (++ xs)) x y
+churn _ end = end
+
+-- Sort and deduplicate
+sortNub :: (Ord a) => [a] -> [a]
+sortNub = Set.toList . Set.fromList

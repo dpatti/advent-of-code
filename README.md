@@ -1,16 +1,16 @@
 # Advent of Code
 
 This includes my Haskell solutions to [Advent of Code][1]. Typically they are
-compiled with:
+ran with:
 
 ```
-stack runghc 1.hs < 1.input
+./test 1.hs < 1.input
 ```
 
 or for more cpu-intensive problems:
 
 ```
-stack ghc 1.hs && ./1 < 1.input
+./run 1.hs < 1.input
 ```
 
 I'm sure there's a better way to do this, but it's all pretty one-offy. Some

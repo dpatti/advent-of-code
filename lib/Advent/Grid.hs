@@ -9,6 +9,7 @@ import Advent.Search
 import Advent.State
 import Control.Monad
 import Control.Monad.State
+import Data.Tuple
 import Data.Map.Strict (Map, (!))
 import qualified Data.Map.Strict as Map
 
@@ -17,16 +18,13 @@ data Grid a = Grid { tiles :: Map Coord a
                    , distance :: Coord -> Coord -> Distance
                    }
 
-buildGrid :: (Coord -> a) -> (Coord -> [Coord]) -> Int -> Int -> Grid a
+buildGrid :: Ord a => (Coord -> Maybe a) -> (Coord -> [Coord]) -> Int -> Int -> Grid a
 buildGrid f neighbors xMax yMax = Grid { tiles, poi, distance }
   where
-    tiles = foldr (\loc -> Map.insert loc (f loc)) Map.empty $ do
-      x <- [0..xMax]
-      y <- [0..yMax]
+    tiles = foldr (Map.alter <$> (const . f) <*> id) Map.empty $
+      Coord <$> [0..xMax] <*> [0..yMax]
 
-      return $ Coord x y
-
-    poi = undefined
+    poi = Map.fromList . map swap . Map.toList $ tiles
 
     distance from to = distances ! (from, to)
 

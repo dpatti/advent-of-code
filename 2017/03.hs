@@ -3,7 +3,6 @@ import Advent
 import qualified Advent.Coord as Coord
 import Data.DList (DList)
 import qualified Data.DList as DList
-import Data.Functor
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe

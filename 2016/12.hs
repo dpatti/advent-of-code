@@ -1,13 +1,8 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
-import Control.Applicative
-import Data.Char
+import Advent
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Data.Maybe
-import Text.Megaparsec
-import Text.Megaparsec.Lexer
-import Text.Megaparsec.String
 
 type Register = Int
 type Value = Int
@@ -23,11 +18,8 @@ data Cpu = Cpu { commands :: [Command]
                , registers :: Map Register Value
                } deriving Show
 
-fromRight (Left e) = error (show e)
-fromRight (Right v) = v
-
 parseCommand :: String -> Command
-parseCommand = fromRight . parse commandParser "test"
+parseCommand = parseWith commandParser
   where
     commandParser :: Parser Command
     commandParser =
@@ -40,11 +32,8 @@ parseCommand = fromRight . parse commandParser "test"
       (ValueSource <$> valueParser)
       <|> (RegisterSource <$> registerParser)
 
-    registerParser = ord <$> anyChar 
+    registerParser = ord <$> anyChar
     valueParser = fromIntegral <$> signed (skipMany spaceChar) decimal
-
-upsert :: Ord k => (Maybe a -> a) -> k -> Map k a -> Map k a
-upsert f = Map.alter (Just . f)
 
 process :: Cpu -> Cpu
 process cpu@Cpu { commands, pc, registers } =

@@ -1,13 +1,9 @@
-import Data.List
-import Text.Megaparsec
-import Text.Megaparsec.Lexer
-import Text.Megaparsec.String
-import Debug.Trace
+import Advent hiding (rotate)
 
 data Disc = Disc Int Int deriving Show
 
 parseDisc :: String -> Disc
-parseDisc = fromRight . parse discParser "stdin"
+parseDisc = parseWith discParser
   where
     discParser :: Parser Disc
     discParser = do
@@ -20,9 +16,6 @@ parseDisc = fromRight . parse discParser "stdin"
       string "."
 
       return $ Disc max init
-
-fromRight (Left e) = error $ "fromLeft: " ++ show e
-fromRight (Right v) = v
 
 rotate :: [Disc] -> [(Int, [Int])]
 rotate ds = map time' [0..]

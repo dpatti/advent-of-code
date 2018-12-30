@@ -107,9 +107,11 @@ singleton el = Compound [MLink (Molecule [el])]
 instance Show Compound where
   show = mconcat . map show . links
 
+instance Semigroup Compound where
+  Compound l <> Compound r = Compound (l ++ r)
+
 instance Monoid Compound where
   mempty = Compound { links = [] }
-  mappend (Compound l) (Compound r) = Compound (l ++ r)
 
 data Reduction a = Reduction { steps :: Sum Int, value :: a }
 
@@ -132,10 +134,12 @@ instance Monad Reduction where
     let (Reduction steps' value') = f value
      in Reduction { steps = steps + steps', value = value' }
 
+instance (Semigroup a) => Semigroup (Reduction a) where
+  a <> b = Reduction { steps = steps a <> steps b
+                     , value = value a <> value b }
+
 instance (Monoid a) => Monoid (Reduction a) where
   mempty = Reduction { steps = Sum 0, value = mempty }
-  mappend a b = Reduction { steps = steps a <> steps b
-                          , value = value a <> value b }
 
 reduce :: Compound -> Reduction Compound
 reduce = (mconcat <$>) . mapM reduce' . links
@@ -181,6 +185,7 @@ bruteSteps from = replaceAll from
     bruteSteps' steps froms tos
       | froms == tos = [steps]
       | otherwise = [] -- something replacements froms
+    replaceAll = undefined
 
 -- -----------------------------------------------------------------------------
 

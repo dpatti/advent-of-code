@@ -133,7 +133,7 @@ spawnPair comp =
    withPid p = modify $ \s -> s { regs = regs s & Map.insert 'p' p }
 
 main :: IO ()
-main = catch (solve parse part1 part2) (putStrLn . displayException)
+main = solve parse part1 part2
   where
     parse = map (parseWith instParser) . lines
     part1 = headMay . evalComputation 0 [] . fix . loadProgram . Vector.fromList

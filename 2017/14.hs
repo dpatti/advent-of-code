@@ -1,4 +1,5 @@
 import Advent
+import Advent.Ring
 
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as ByteString

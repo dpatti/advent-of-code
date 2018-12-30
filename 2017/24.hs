@@ -1,5 +1,5 @@
 {-# LANGUAGE NamedFieldPuns #-}
-import Advent
+import Advent hiding (left)
 import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 import Data.Tuple

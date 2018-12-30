@@ -2,12 +2,8 @@
 
 import Advent hiding (distance)
 import Control.Monad.State
-import Data.List
-import Data.Maybe
 import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
-import Text.Megaparsec hiding (State)
-import Text.Megaparsec.Lexer
 
 data Node = Node { location :: Coord
                  , size :: Int
