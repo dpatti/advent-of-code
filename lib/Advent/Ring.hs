@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveFoldable #-}
+{-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE ViewPatterns #-}
 
 module Advent.Ring where
@@ -21,7 +22,14 @@ peek n = Foldable.toList . Seq.cycleTaking n . unRing
 
 skip :: Int -> Ring a -> Ring a
 skip n (unRing -> s) =
-  Ring . Seq.drop n . Seq.cycleTaking (n + Seq.length s) $ s
+  Ring
+  . Seq.drop n
+  . Seq.cycleTaking (n + Seq.length s)
+  $ s
+
+rewind :: Int -> Ring a -> Ring a
+rewind n r = skip ((len - n) `mod` len) r
+  where len = Seq.length (unRing r)
 
 skipWhile :: (a -> Bool) -> Ring a -> Ring a
 skipWhile f (unRing -> s) =
@@ -40,3 +48,10 @@ splice :: Int -> ([a] -> [a]) -> Ring a -> Ring a
 splice n f ring =
   let (batch, unRing -> s) = next n ring
    in Ring (Seq.drop n s >< Seq.fromList (f batch))
+
+insert :: a -> Ring a -> Ring a
+insert a (unRing -> s) = Ring (a Seq.<| s)
+
+remove :: Ring a -> (Maybe a, Ring a)
+remove (unRing -> first Seq.:<| rest) = (Just first, Ring rest)
+remove ring = (Nothing, ring)
